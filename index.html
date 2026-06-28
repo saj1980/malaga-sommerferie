@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Malaga Sommerferie 2026</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #ffffff; --bg2: #f5f4f0; --bg3: #eeece7;
+    --text: #1a1a18; --text2: #6b6a65; --text3: #9b9a96;
+    --border: rgba(0,0,0,0.12); --border2: rgba(0,0,0,0.22);
+    --radius: 8px; --radius-lg: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1c1c1a; --bg2: #252523; --bg3: #2e2e2c;
+      --text: #f0ede6; --text2: #9b9a96; --text3: #6b6a65;
+      --border: rgba(255,255,255,0.12); --border2: rgba(255,255,255,0.22);
+    }
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg3); color: var(--text); min-height: 100vh; padding: 2rem 1rem; }
+  .wrap { max-width: 900px; margin: 0 auto; }
+
+  h1 { font-size: 26px; font-weight: 500; margin-bottom: 4px; }
+  .sub { font-size: 14px; color: var(--text2); margin-bottom: 1.5rem; }
+
+  .stats { display: flex; gap: 10px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .stat { background: var(--bg); border-radius: var(--radius-lg); padding: 12px 20px; text-align: center; border: 0.5px solid var(--border); }
+  .stat-n { font-size: 26px; font-weight: 500; }
+  .stat-l { font-size: 11px; color: var(--text2); }
+
+  .flights { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+  @media (max-width: 560px) { .flights { grid-template-columns: 1fr; } }
+  .flight-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 14px 16px; }
+  .flight-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .flight-route { font-size: 18px; font-weight: 500; letter-spacing: .02em; }
+  .flight-badge { font-size: 10px; padding: 3px 8px; border-radius: 99px; font-weight: 500; }
+  .badge-out { background: #E6F1FB; color: #185FA5; }
+  .badge-ret { background: #EAF3DE; color: #3B6D11; }
+  .flight-times { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .ft { font-size: 22px; font-weight: 500; }
+  .ft-sep { color: var(--text3); font-size: 13px; flex: 1; text-align: center; border-bottom: 1px dashed var(--border2); position: relative; }
+  .ft-sep span { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); background: var(--bg); padding: 0 4px; font-size: 11px; color: var(--text3); white-space: nowrap; }
+  .flight-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); }
+  .ref { font-size: 12px; color: var(--text3); margin-top: 8px; padding-top: 8px; border-top: 0.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+  .ref-code { font-family: monospace; font-size: 13px; font-weight: 500; color: var(--text); letter-spacing: .05em; }
+
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .fb { font-size: 13px; padding: 6px 14px; border-radius: 99px; border: 0.5px solid var(--border2); background: transparent; color: var(--text2); cursor: pointer; transition: all .15s; font-family: inherit; }
+  .fb.on { background: var(--text); color: var(--bg); border-color: transparent; }
+  .fb:hover:not(.on) { background: var(--bg2); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 14px; margin-bottom: 2.5rem; }
+  .act-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; transition: border-color .15s, box-shadow .15s; }
+  .act-card:hover { border-color: var(--border2); box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  .act-card.hidden { display: none; }
+
+  .img-wrap { height: 170px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; flex-shrink: 0; }
+  .img-wrap img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .img-wrap i { font-size: 56px; position: relative; z-index: 1; }
+
+  .act-body { padding: 14px 16px; flex: 1; display: flex; flex-direction: column; gap: 5px; }
+  .act-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .act-title { font-weight: 500; font-size: 15px; line-height: 1.3; }
+  .act-desc { font-size: 13px; color: var(--text2); line-height: 1.55; }
+  .act-footer { display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 12px; border-top: 0.5px solid var(--border); }
+  .act-price { font-size: 12px; color: var(--text2); }
+  .lnk { font-size: 12px; padding: 5px 12px; border-radius: 99px; border: 0.5px solid var(--border2); background: transparent; color: var(--text); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; transition: background .15s; }
+  .lnk:hover { background: var(--bg2); }
+
+  .tag { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; padding: 2px 8px; border-radius: 99px; font-weight: 500; }
+  .tag-sport { background: #E6F1FB; color: #185FA5; }
+  .tag-kids { background: #FBEAF0; color: #993556; }
+  .tag-beach { background: #E1F5EE; color: #0F6E56; }
+  .tag-culture { background: #EEEDFE; color: #3C3489; }
+  .tag-free { background: #EAF3DE; color: #3B6D11; }
+  .tag-food { background: #FAEEDA; color: #854F0B; }
+  .tag-trip { background: #FAECE7; color: #993C1D; }
+  .tag-urgent { background: #FAEEDA; color: #854F0B; }
+  @media (prefers-color-scheme: dark) {
+    .tag-sport { background: #0C447C; color: #B5D4F4; }
+    .tag-kids { background: #72243E; color: #F4C0D1; }
+    .tag-beach { background: #085041; color: #9FE1CB; }
+    .tag-culture { background: #3C3489; color: #CECBF6; }
+    .tag-free { background: #27500A; color: #C0DD97; }
+    .tag-food { background: #633806; color: #FAC775; }
+    .tag-trip { background: #712B13; color: #F5C4B3; }
+    .tag-urgent { background: #633806; color: #FAC775; }
+  }
+
+  .section-label { font-size: 11px; font-weight: 500; color: var(--text3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 10px; }
+  .day-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-bottom: 2.5rem; }
+  .dc { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 10px 14px; cursor: pointer; transition: all .15s; user-select: none; }
+  .dc:hover { border-color: var(--border2); background: var(--bg2); }
+  .dc.done { opacity: .42; }
+  .dc.done .dt { text-decoration: line-through; }
+  .dc-meta { display: flex; justify-content: space-between; margin-bottom: 3px; }
+  .dc-meta span { font-size: 11px; color: var(--text3); }
+  .dt { font-size: 12px; color: var(--text); }
+
+  .tips { background: var(--bg2); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.5rem; border: 0.5px solid var(--border); }
+  .tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tip { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--text2); line-height: 1.4; }
+
+  footer { text-align: center; font-size: 12px; color: var(--text3); padding-top: 1rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:1.5rem">
+    <div>
+      <h1>Malaga sommerferie</h1>
+      <p class="sub">4.–15. juli 2026 &nbsp;·&nbsp; Higuerón Hotel, Fuengirola &nbsp;·&nbsp; Emily (6), Noah (12), Elias (15)</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="stat-n" id="cnt">12</div><div class="stat-l">dage tilbage</div></div>
+      <div class="stat"><div class="stat-n">35°</div><div class="stat-l">juli snit</div></div>
+      <div class="stat"><div class="stat-n">27°</div><div class="stat-l">havtemperatur</div></div>
+    </div>
+  </div>
+
+  <div class="flights">
+    <div class="flight-card">
+      <div class="flight-header">
+        <div>
+          <span class="flight-route">CPH &rarr; AGP</span>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px">Lørdag 4. juli 2026</div>
+        </div>
+        <span class="flight-badge badge-out"><i class="ti ti-plane-departure" style="font-size:10px"></i> Udrejse</span>
+      </div>
+      <div class="flight-times">
+        <span class="ft">06:50</span>
+        <div class="ft-sep"><span>3h 50m · SK2807</span></div>
+        <span class="ft">10:40</span>
+      </div>
+      <div class="flight-meta">
+        <span><i class="ti ti-building" style="font-size:12px"></i> CPH Terminal 3</span>
+        <span>Ankomst Malaga</span>
+      </div>
+      <div class="ref">
+        <span>Booking reference</span>
+        <span class="ref-code">XQRN4G</span>
+      </div>
+    </div>
+    <div class="flight-card">
+      <div class="flight-header">
+        <div>
+          <span class="flight-route">AGP &rarr; CPH</span>
+          <div style="font-size:12px;color:var(--text2);margin-top:2px">Onsdag 15. juli 2026</div>
+        </div>
+        <span class="flight-badge badge-ret"><i class="ti ti-plane-arrival" style="font-size:10px"></i> Hjemrejse</span>
+      </div>
+      <div class="flight-times">
+        <span class="ft">20:10</span>
+        <div class="ft-sep"><span>3h 35m · SK588</span></div>
+        <span class="ft">23:45</span>
+      </div>
+      <div class="flight-meta">
+        <span>Afgang Malaga</span>
+        <span><i class="ti ti-building" style="font-size:12px"></i> CPH Terminal 3</span>
+      </div>
+      <div class="ref">
+        <span>Booking reference</span>
+        <span class="ref-code">XQRN4G</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="filters" id="filters">
+    <button class="fb on" data-f="all">Alle aktiviteter</button>
+    <button class="fb" data-f="sport"><i class="ti ti-ball-tennis"></i> Sport</button>
+    <button class="fb" data-f="beach"><i class="ti ti-waves"></i> Strand & vand</button>
+    <button class="fb" data-f="kids"><i class="ti ti-star"></i> Emily (6 år)</button>
+    <button class="fb" data-f="culture"><i class="ti ti-building-castle"></i> Kultur</button>
+    <button class="fb" data-f="trip"><i class="ti ti-car"></i> Dagture</button>
+    <button class="fb" data-f="free"><i class="ti ti-gift"></i> Gratis</button>
+    <button class="fb" data-f="food"><i class="ti ti-chef-hat"></i> Mad</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <p class="section-label">12-dages plan — klik for at markere som klaret</p>
+  <div class="day-grid" id="days"></div>
+
+  <div class="tips">
+    <p class="section-label" style="margin-bottom:12px">Husk at booke inden afrejse</p>
+    <div class="tips-grid">
+      <div class="tip"><i class="ti ti-alert-triangle" style="color:#BA7517;flex-shrink:0;margin-top:1px"></i><span>Caminito del Rey — book 4 uger i forvejen, sælger ud</span></div>
+      <div class="tip"><i class="ti ti-alert-triangle" style="color:#BA7517;flex-shrink:0;margin-top:1px"></i><span>Delfinsafari — book 2 uger i forvejen</span></div>
+      <div class="tip"><i class="ti ti-info-circle" style="color:#185FA5;flex-shrink:0;margin-top:1px"></i><span>Alcazaba + Gibralfaro gratis søndag efter kl. 14:00</span></div>
+      <div class="tip"><i class="ti ti-info-circle" style="color:#185FA5;flex-shrink:0;margin-top:1px"></i><span>Undgå aktiviteter udendørs 12–16 (op til 40°C)</span></div>
+      <div class="tip"><i class="ti ti-check" style="color:#3B6D11;flex-shrink:0;margin-top:1px"></i><span>Padel: bed concierge arrangere lokale modstandere</span></div>
+      <div class="tip"><i class="ti ti-check" style="color:#3B6D11;flex-shrink:0;margin-top:1px"></i><span>Tjek malagacf.com for præsæsonskampe i juli</span></div>
+    </div>
+  </div>
+
+  <footer>Malaga Ferie 2026 &nbsp;·&nbsp; Genereret med Claude</footer>
+</div>
+
+<script>
+const acts = [
+  {cats:'sport',bg:'#E6F1FB',ic:'ti-ball-tennis',icol:'#185FA5',title:'Padel — Higuerón Club',desc:'5-stjernet padel direkte på hotellet. Pro-træner tilgængelig. Spørg concierge om at arrangere lokale modstandere til Noah & Elias.',price:'Book via hotellet',link:'https://higueronresort.com/en/sport/facilities/',lt:'Higuerón Sport',img:'photo-1554068865-24cecd4e34b8',urgent:false,tags:['sport']},
+  {cats:'kids',bg:'#FBEAF0',ic:'ti-paw',icol:'#993556',title:'Bioparc Fuengirola',desc:'Ingen bure — dyrene lever næsten frit. Babygorillaer, tigere, zebra og meget mere. 5/5 TripAdvisor. Tæt på hotellet.',price:'Fra €34/voksen',link:'https://www.bioparcfuengirola.es/en/entries/',lt:'Køb billetter',img:'photo-1564760055775-d63b17a55c44',urgent:false,tags:['kids']},
+  {cats:'kids',bg:'#FBEAF0',ic:'ti-butterfly',icol:'#993556',title:'Monowa — Butterfly Park, Benalmadena',desc:'Europas største sommerfuglepark (tidl. Mariposario) — nu hedder det Monowa. 1.500+ eksotiske sommerfugle i tropisk setting. Fantastisk for Emily.',price:'Fra €17',link:'https://monowa.es/en/infos-visite',lt:'Besøgsinfo',img:'photo-1452022449256-33bde28c2b63',urgent:false,tags:['kids']},
+  {cats:'kids free',bg:'#EAF3DE',ic:'ti-tree',icol:'#3B6D11',title:'Parque de la Paloma',desc:'Gratis bypark i Benalmadena med geder, fugle, sø, kaktushauge og store legepladser. Perfekt eftermiddagsudflugt.',price:'Gratis',link:'https://www.google.com/maps/search/Parque+de+la+Paloma+Benalmadena',lt:'Find vej',img:'photo-1441974231531-c6227db76b6e',urgent:false,tags:['kids','free']},
+  {cats:'kids trip',bg:'#FBEAF0',ic:'ti-home-heart',icol:'#993556',title:'Júzcar — Smølf-landsbyen',desc:'Hele landsbyen er malet blå. Emilys univers i virkeligheden! Kombiner med Ronda-dagtur (~25 km derfra).',price:'Gratis at besøge',link:'https://www.juzcar.es/',lt:'Mere info',img:'photo-1598135753163-6167c1a1ad65',urgent:false,tags:['kids','trip']},
+  {cats:'sport',bg:'#E6F1FB',ic:'ti-route',icol:'#185FA5',title:'Caminito del Rey',desc:'Ikonisk klatregang langs dramatisk gorge i bjergene. ~1 time fra Malaga. Perfekt for Noah & Elias. Book uger i forvejen!',price:'Fra €10/person',link:'https://www.caminitodelrey.info/en/tickets/buy',lt:'Book billetter',img:'photo-1551632811-561732d1e306',urgent:true,tags:['sport']},
+  {cats:'sport kids',bg:'#E6F1FB',ic:'ti-steering-wheel',icol:'#185FA5',title:'Go-kart, Costa del Sol',desc:'Flere baner langs kysten. Familiebaner tilgængelige. Sjovt for alle tre børn og de voksne.',price:'Ca. €15–25 pr. løb',link:'https://www.getyourguide.com/malaga-l402/activities-tc1/',lt:'Find aktiviteter',img:'photo-1569651163340-5fa8e75b2e29',urgent:false,tags:['sport','kids']},
+  {cats:'beach kids',bg:'#E1F5EE',ic:'ti-waves',icol:'#0F6E56',title:'Aqualand Torremolinos',desc:'Vandland med bølgebassin, lazy river og rutsjebaner for alle aldersgrupper. ~20 min fra Higuerón.',price:'2 voksne + 2 børn: €122',link:'https://www.aqualand.es/torremolinos/en/',lt:'Køb billetter',img:'photo-1575373568305-a1c3b08cf14e',urgent:false,tags:['beach','kids']},
+  {cats:'beach kids free',bg:'#E1F5EE',ic:'ti-sun',icol:'#0F6E56',title:'Los Boliches — hjemmestrand',desc:'Flad, rolig strand 5 min fra Higuerón. Perfekt for Emily. Cafeer og chiringuitos langs hele stranden.',price:'Gratis',link:'https://www.google.com/maps/search/Playa+Los+Boliches+Fuengirola',lt:'Find stranden',img:'photo-1507525428034-b723cf961d3e',urgent:false,tags:['beach','kids','free']},
+  {cats:'beach kids',bg:'#E1F5EE',ic:'ti-sailboat',icol:'#0F6E56',title:'Delfinsafari, Benalmadena',desc:'Katamarankrydstogt med delfiner i det åbne hav. Rated 4.4/5 (559 anm). Vandrutsjebane ombord. Hele familien elsker det.',price:'Fra €24/voksen',link:'https://www.getyourguide.com/benalmadena-l429/benalmadena-dolphin-watching-boat-tour-t391414/',lt:'Book nu',img:'photo-1516026672322-bc52d61a55d5',urgent:true,tags:['beach','kids']},
+  {cats:'beach sport',bg:'#E1F5EE',ic:'ti-kayak',icol:'#0F6E56',title:'Kajak & snorkel, La Herradura',desc:'Cerro Gordo naturpark. Rated 4.8/5 (538 anm). Krystalklart vand — fantastisk for Noah & Elias.',price:'Fra €40/person',link:'https://www.getyourguide.com/la-herradura-l78895/activities-tc1/',lt:'Book tur',img:'photo-1559827260-dc66d52bef19',urgent:false,tags:['beach','sport']},
+  {cats:'culture free',bg:'#EEEDFE',ic:'ti-building-castle',icol:'#3C3489',title:'Alcazaba + Gibralfaro, Malaga',desc:'Maurisk borg fra 1057 + panoramaudsigt over Malaga og havnen. Kombibillet €10. Gratis søndag efter 14:00.',price:'Gratis søn. / €10 ellers',link:'https://alcazabaygibralfaro.malaga.eu/en/visits/price-list-and-visiting-hours/',lt:'Officiel side',img:'photo-1592843604788-c4e693e6c6f5',urgent:false,tags:['culture','free']},
+  {cats:'culture free',bg:'#EEEDFE',ic:'ti-paint',icol:'#3C3489',title:'Malaga by — Soho & havn',desc:'Kæmpe street art-muraler i Soho, Atarazanas-markedet, havnepromenaden Palmeral de las Sorpresas. Gratis halvdag.',price:'Gratis',link:'https://visita.malaga.eu/en/what-to-see-and-do',lt:'Malaga turisme',img:'photo-1542314831-068cd1dbfeeb',urgent:false,tags:['culture','free']},
+  {cats:'trip culture free',bg:'#FAECE7',ic:'ti-bridge',icol:'#993C1D',title:'Ronda — Puente Nuevo',desc:'Spektakulær bro over Tajo-kløften. Et af Spaniens smukkeste syn. Kombiner med Júzcar (smølf-landsby) ~25 km derfra.',price:'Gratis at se',link:'https://www.turismoderonda.es/en/',lt:'Ronda turistinfo',img:'photo-1583422409516-2895a77efded',urgent:false,tags:['trip','culture','free']},
+  {cats:'trip beach free',bg:'#FAECE7',ic:'ti-mountain',icol:'#993C1D',title:'Nerja + Burriana strand',desc:'Balcon de Europa (gratis view), Burriana strand (5/5 TripAdvisor), evt. Nerja-hulerne. ~45 min fra Fuengirola.',price:'Strand gratis / huler €18',link:'https://www.nerja.es/en/',lt:'Nerja turistinfo',img:'photo-1493225457124-a3eb161ffa5f',urgent:false,tags:['trip','beach','free']},
+  {cats:'trip culture free',bg:'#FAECE7',ic:'ti-rock',icol:'#993C1D',title:'El Torcal, Antequera',desc:'Gratis naturreservat med dramatiske kalkstensformationer. Nem 3.8 km vandring. ~45 min fra hotellet.',price:'Gratis',link:'https://www.torcaldeantequera.com/en/information/',lt:'Planlæg besøg',img:'photo-1500534314209-a25ddb2bd429',urgent:false,tags:['trip','culture','free']},
+  {cats:'food kids',bg:'#FAEEDA',ic:'ti-chef-hat',icol:'#854F0B',title:'Paella-madlavningskursus',desc:'Rated 4.9/5 (727 anm). 3 timer inkl. markedsbesøg og sangria. Bedst sælgende aktivitet i Malaga.',price:'Fra €78/person',link:'https://www.getyourguide.com/malaga-l402/malaga-paella-and-sangria-cooking-class-with-market-visit-t58024/',lt:'Book kursus',img:'photo-1556909114-f6e7ad7d3136',urgent:false,tags:['food','kids']}
+];
+
+const dayPlan = [
+  {n:1,d:'4. jul',t:'Ankomst 10:40 + første strandtur'},
+  {n:2,d:'5. jul',t:'Bioparc Fuengirola'},
+  {n:3,d:'6. jul',t:'Padel om morgenen + Parque Paloma'},
+  {n:4,d:'7. jul',t:'Fri stranddag + hygge'},
+  {n:5,d:'8. jul',t:'Malaga by — Soho & Alcazaba'},
+  {n:6,d:'9. jul',t:'Delfinsafari + Butterfly Park'},
+  {n:7,d:'10. jul',t:'Caminito del Rey + strand'},
+  {n:8,d:'11. jul',t:'Aqualand Torremolinos'},
+  {n:9,d:'12. jul',t:'Dagtur: Ronda + Júzcar'},
+  {n:10,d:'13. jul',t:'Dagtur: Nerja + Frigiliana'},
+  {n:11,d:'14. jul',t:'Kajak & snorkel + paella-kursus'},
+  {n:12,d:'15. jul',t:'Fri morgen — flyver 20:10 hjem'}
+];
+
+const tagMap = {sport:'tag-sport',kids:'tag-kids',beach:'tag-beach',culture:'tag-culture',free:'tag-free',food:'tag-food',trip:'tag-trip'};
+const tagLabel = {sport:'Sport',kids:'Emily',beach:'Strand & vand',culture:'Kultur',free:'Gratis',food:'Mad',trip:'Dagtur'};
+
+// Build activity cards
+const grid = document.getElementById('grid');
+acts.forEach(a => {
+  const tagsHtml = a.tags.map(t => `<span class="tag ${tagMap[t]}">${tagLabel[t]}</span>`).join('');
+  const urgent = a.urgent ? `<span class="tag tag-urgent"><i class="ti ti-alert-triangle" style="font-size:10px"></i> Book tidligt</span>` : '';
+  const card = document.createElement('div');
+  card.className = 'act-card';
+  card.dataset.cats = a.cats;
+  card.innerHTML = `
+    <div class="img-wrap" style="background:${a.bg}">
+      <i class="ti ${a.ic}" style="color:${a.icol}"></i>
+      <img src="https://images.unsplash.com/${a.img}?w=600&h=340&fit=crop&q=80" alt="${a.title}" loading="lazy" onerror="this.remove()">
+    </div>
+    <div class="act-body">
+      <div class="act-tags">${tagsHtml}${urgent}</div>
+      <p class="act-title">${a.title}</p>
+      <p class="act-desc">${a.desc}</p>
+      <div class="act-footer">
+        <span class="act-price">${a.price}</span>
+        <a class="lnk" href="${a.link}" target="_blank" rel="noopener noreferrer">${a.lt} <i class="ti ti-external-link" style="font-size:11px"></i></a>
+      </div>
+    </div>`;
+  grid.appendChild(card);
+});
+
+// Build day planner
+const daysEl = document.getElementById('days');
+const done = new Set(JSON.parse(localStorage.getItem('mal26') || '[]'));
+
+dayPlan.forEach(day => {
+  const el = document.createElement('div');
+  el.className = 'dc' + (done.has(day.n) ? ' done' : '');
+  el.innerHTML = `
+    <div class="dc-meta"><span>${day.d}</span><span>dag ${day.n}</span></div>
+    <p class="dt">${day.t}</p>`;
+  el.addEventListener('click', () => {
+    if (done.has(day.n)) done.delete(day.n); else done.add(day.n);
+    localStorage.setItem('mal26', JSON.stringify([...done]));
+    el.classList.toggle('done');
+    document.getElementById('cnt').textContent = 12 - done.size;
+  });
+  daysEl.appendChild(el);
+});
+
+document.getElementById('cnt').textContent = 12 - (JSON.parse(localStorage.getItem('mal26') || '[]')).length;
+
+// Filters
+document.getElementById('filters').addEventListener('click', e => {
+  const btn = e.target.closest('.fb[data-f]');
+  if (!btn) return;
+  document.querySelectorAll('.fb[data-f]').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  const f = btn.dataset.f;
+  document.querySelectorAll('.act-card').forEach(c => {
+    c.classList.toggle('hidden', f !== 'all' && !c.dataset.cats.includes(f));
+  });
+});
+</script>
+</body>
+</html>
