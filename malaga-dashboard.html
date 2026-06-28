@@ -112,6 +112,7 @@
   .tag-food { background: #FAEEDA; color: #854F0B; }
   .tag-trip { background: #FAECE7; color: #993C1D; }
   .tag-urgent { background: #FAEEDA; color: #854F0B; }
+  .tag-boys { background: #EDE9FB; color: #4F37C8; }
   @media (prefers-color-scheme: dark) {
     .tag-sport { background: #0C447C; color: #B5D4F4; }
     .tag-kids { background: #72243E; color: #F4C0D1; }
@@ -121,6 +122,7 @@
     .tag-food { background: #633806; color: #FAC775; }
     .tag-trip { background: #712B13; color: #F5C4B3; }
     .tag-urgent { background: #633806; color: #FAC775; }
+    .tag-boys { background: #2D2468; color: #C4BCF8; }
   }
 
   .section-label { font-size: 11px; font-weight: 500; color: var(--text3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 10px; }
@@ -306,6 +308,7 @@
       <button class="fb" data-f="trip"><i class="ti ti-car"></i> Dagture</button>
       <button class="fb" data-f="free"><i class="ti ti-gift"></i> Gratis</button>
       <button class="fb" data-f="food"><i class="ti ti-chef-hat"></i> Mad</button>
+      <button class="fb" data-f="boys"><i class="ti ti-users"></i> Far & drenge</button>
     </div>
 
     <div class="grid" id="grid"></div>
@@ -466,7 +469,15 @@ const acts = [
   {cats:'trip culture free',bg:'#FAECE7',ic:'ti-bridge',icol:'#993C1D',title:'Ronda — Puente Nuevo',desc:'Spektakulær bro over Tajo-kløften. Et af Spaniens smukkeste syn. Kombiner med Júzcar (smølf-landsby) ~25 km derfra.',price:'Gratis at se',link:'https://www.turismoderonda.es/en/',lt:'Ronda turistinfo',img:'photo-1721429432335-e838e01e12e1',urgent:false,tags:['trip','culture','free'],lat:36.7432,lng:-5.1660},
   {cats:'trip beach free',bg:'#FAECE7',ic:'ti-mountain',icol:'#993C1D',title:'Nerja + Burriana strand',desc:'Balcon de Europa (gratis view), Burriana strand (5/5 TripAdvisor), evt. Nerja-hulerne (4.5/5 — 8.000+ anm). ~45 min fra Fuengirola.',price:'Strand gratis / huler ~€10',link:'https://www.nerja.es/en/',lt:'Nerja turistinfo',img:'photo-1663578738134-789a52c6314c',urgent:false,tags:['trip','beach','free'],lat:36.7473,lng:-3.8780},
   {cats:'trip culture free',bg:'#FAECE7',ic:'ti-rock',icol:'#993C1D',title:'El Torcal, Antequera',desc:'Gratis naturreservat med dramatiske kalkstensformationer. Nem 3.8 km vandring. Åbent 10–19 om sommeren. 4.6/5 TripAdvisor (5.000+ anm) — højest rated i området. ~45 min fra hotellet.',price:'Gratis · Parkering €3',link:'https://www.torcaldeantequera.com/en/information/',lt:'Planlæg besøg',img:'photo-1742081366022-a38e31c0ddb5',urgent:false,tags:['trip','culture','free'],lat:36.9450,lng:-4.5449},
-  {cats:'food kids',bg:'#FAEEDA',ic:'ti-chef-hat',icol:'#854F0B',title:'Paella-madlavningskursus',desc:'Rated 4.6/5 (500+ anm). 3 timer inkl. markedsbesøg og sangria. Bedst sælgende madaktivitet i Malaga.',price:'Fra €65–85/person',link:'https://www.getyourguide.com/malaga-l402/malaga-paella-and-sangria-cooking-class-with-market-visit-t58024/',lt:'Book kursus',img:'photo-1723240906605-1f0ed36b5efb',urgent:false,tags:['food','kids'],lat:36.7194,lng:-4.4203}
+  {cats:'food kids',bg:'#FAEEDA',ic:'ti-chef-hat',icol:'#854F0B',title:'Paella-madlavningskursus',desc:'Rated 4.6/5 (500+ anm). 3 timer inkl. markedsbesøg og sangria. Bedst sælgende madaktivitet i Malaga.',price:'Fra €65–85/person',link:'https://www.getyourguide.com/malaga-l402/malaga-paella-and-sangria-cooking-class-with-market-visit-t58024/',lt:'Book kursus',img:'photo-1723240906605-1f0ed36b5efb',urgent:false,tags:['food','kids'],lat:36.7194,lng:-4.4203},
+  {cats:'beach sport kids',bg:'#E1F5EE',ic:'ti-wind',icol:'#0F6E56',title:'Parasailing, Fuengirola',desc:'Flyv 80 meter over Middelhavet og se hele Costa del Sol fra luften. Børn kan med voksne — et eventyr for hele familien direkte fra Fuengirolas strand. 5/5 TripAdvisor.',price:'Ca. €59/person',link:'https://www.getyourguide.com/fuengirola-l1077/activities-tc1/',lt:'Find udbyder',img:'photo-1628690920311-a820459457ba',urgent:false,tags:['beach','sport'],lat:36.534,lng:-4.620},
+  {cats:'kids',bg:'#FBEAF0',ic:'ti-bug',icol:'#993556',title:'Snakeroom Serpentarium, Fuengirola',desc:'Hold slanger, øgler og edderkopper i et af Europas højest ratede reptiliehuse. 4.8/5 TripAdvisor — en anderledes og uforglemmelig oplevelse tæt på lejligheden.',price:'Under €10/person',link:'https://www.getyourguide.com/fuengirola-l1077/activities-tc1/',lt:'Se mere',img:'photo-1571391733814-15ac29ac3544',urgent:false,tags:['kids'],lat:36.537,lng:-4.626},
+  {cats:'kids sport',bg:'#EAF3DE',ic:'ti-golf',icol:'#3B6D11',title:'Adventure Golf, Fuengirola',desc:'Skyggerige og udfordrende minigolfbaner midt i Fuengirola. 4.5/5 TripAdvisor. Perfekt til en hyggelig aften for hele familien — Noah og Elias elsker konkurrencen.',price:'Ca. €8–10/person',link:'https://www.getyourguide.com/fuengirola-l1077/activities-tc1/',lt:'Find bane',img:'photo-1564607890610-2172bf275043',urgent:false,tags:['kids','sport'],lat:36.540,lng:-4.617},
+  {cats:'sport trip boys',bg:'#EDE9FB',ic:'ti-motorbike',icol:'#4F37C8',title:'Quad Safari, Mijas',desc:'Kør quad-bikes off-road i Mijas-bjergene med panoramaudsigt over Costa del Sol. 5/5 TripAdvisor. Perfekt far-og-sønner-tur — kun ~10 min fra lejligheden.',price:'Ca. €99–151/quad (2 pers.)',link:'https://www.getyourguide.com/mijas-l50618/activities-tc1/',lt:'Book quad-tur',img:'photo-1496521061024-90e1c1221555',urgent:false,tags:['boys','sport'],lat:36.589,lng:-4.637},
+  {cats:'sport boys',bg:'#EDE9FB',ic:'ti-mountain',icol:'#4F37C8',title:'Canyoning, Marbella',desc:'Rappel ned ad 25–30 m vandfald, glid i naturlige rutsjebaner og hop fra klipper i bjergene nær Marbella. 5/5 TripAdvisor. Fra 9 år — Noah og Elias er klar.',price:'Ca. €47–81/person',link:'https://www.getyourguide.com/marbella-l1018/activities-tc1/',lt:'Book canyoning',img:'photo-1621693113354-8b32a9e0ba39',urgent:false,tags:['boys','sport'],lat:36.543,lng:-4.844},
+  {cats:'beach sport boys',bg:'#EDE9FB',ic:'ti-waves',icol:'#4F37C8',title:'Jet Ski, Fuengirola',desc:'Fuld fart på Middelhavet med guide og sikkerhedsintro direkte fra Fuengirolas strand. 5/5 TripAdvisor. Elias kører selv — Noah kan med som passager.',price:'Ca. €59/30 min',link:'https://www.getyourguide.com/fuengirola-l1077/activities-tc1/',lt:'Book jet ski',img:'photo-1505867798796-639ec7e8cdf5',urgent:false,tags:['boys','beach'],lat:36.534,lng:-4.618},
+  {cats:'culture boys',bg:'#EDE9FB',ic:'ti-puzzle',icol:'#4F37C8',title:'Escape Room — The X-Door, Málaga',desc:'Nr. 2 på hele Costa del Sol med 1.200+ anmeldelser og 5/5 TripAdvisor. 60–90 min intens gruppeudfordring midt i Málaga — den perfekte far-og-sønner-aften.',price:'Ca. €15–25/person',link:'https://www.getyourguide.com/malaga-l402/escape-rooms-tc175/',lt:'Book escape room',img:'photo-1581143761812-6d1474cdb9d4',urgent:false,tags:['boys','culture'],lat:36.720,lng:-4.419},
+  {cats:'beach trip boys',bg:'#EDE9FB',ic:'ti-sailboat',icol:'#4F37C8',title:'Whale Watching, Tarifa',desc:'Se spermhvaler, pilothvaler og delfiner i Gibraltarstrædet — et af Europas bedste steder. ~1,5 t fra lejlighed. FIRMM og Turmares er topudbydere med 4.5/5.',price:'Ca. €45–60/person',link:'https://www.firmm.org/en/whale-watching-trips/',lt:'Book FIRMM',img:'photo-1568430462989-44163eb1752f',urgent:false,tags:['boys','beach','trip'],lat:36.014,lng:-5.605}
 ];
 
 const dayPlan = [
@@ -484,8 +495,8 @@ const dayPlan = [
   {n:12,d:'15. jul',t:'Fri morgen — flyver 20:10 hjem'}
 ];
 
-const tagMap = {sport:'tag-sport',kids:'tag-kids',beach:'tag-beach',culture:'tag-culture',free:'tag-free',food:'tag-food',trip:'tag-trip'};
-const tagLabel = {sport:'Sport',kids:'Emily',beach:'Strand & vand',culture:'Kultur',free:'Gratis',food:'Mad',trip:'Dagtur'};
+const tagMap = {sport:'tag-sport',kids:'tag-kids',beach:'tag-beach',culture:'tag-culture',free:'tag-free',food:'tag-food',trip:'tag-trip',boys:'tag-boys'};
+const tagLabel = {sport:'Sport',kids:'Emily',beach:'Strand & vand',culture:'Kultur',free:'Gratis',food:'Mad',trip:'Dagtur',boys:'Far & drenge'};
 
 // Build activity cards
 const grid = document.getElementById('grid');
@@ -672,7 +683,7 @@ document.getElementById('filters').addEventListener('click', e => {
 });
 
 // Kort / map
-const catColors = {sport:'#185FA5',kids:'#993556',beach:'#0F6E56',culture:'#3C3489',free:'#3B6D11',food:'#854F0B',trip:'#993C1D'};
+const catColors = {sport:'#185FA5',kids:'#993556',beach:'#0F6E56',culture:'#3C3489',free:'#3B6D11',food:'#854F0B',trip:'#993C1D',boys:'#4F37C8'};
 let mapInstance = null;
 let allMarkers = [];
 
