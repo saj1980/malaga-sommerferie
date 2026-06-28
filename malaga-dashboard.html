@@ -186,9 +186,11 @@
   #map.on { display:block; }
   .leaflet-popup-content-wrapper { border-radius:10px !important; box-shadow:0 4px 16px rgba(0,0,0,0.12) !important; }
   .leaflet-popup-content { margin:12px 14px !important; }
-  .mp-title { font-size:14px; font-weight:500; margin-bottom:3px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
+  .mp-title { font-size:14px; font-weight:600; margin-bottom:4px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color:#1a1a18; }
+  .mp-desc { font-size:12px; color:#6b6a65; margin-bottom:6px; line-height:1.4; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
   .mp-price { font-size:12px; color:#6b6a65; margin-bottom:8px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
-  .mp-link { font-size:12px; padding:4px 10px; border-radius:99px; border:0.5px solid rgba(0,0,0,0.22); text-decoration:none; color:#1a1a18; display:inline-flex; align-items:center; gap:4px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
+  .mp-link { font-size:12px; padding:5px 12px; border-radius:99px; border:0.5px solid rgba(0,0,0,0.22); text-decoration:none; color:#1a1a18; display:inline-flex; align-items:center; gap:4px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
+  .mp-img { width:100%; height:120px; object-fit:cover; border-radius:7px; display:block; margin-bottom:9px; }
 </style>
 </head>
 <body>
@@ -266,16 +268,22 @@
     </div>
 
     <div class="tips">
-      <p class="section-label" style="margin-bottom:12px">Husk at booke inden afrejse</p>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px">
+        <p class="section-label" style="margin-bottom:0">Husk inden afrejse</p>
+        <span id="preChkProg" style="font-size:12px;color:var(--text3)"></span>
+      </div>
+      <div style="margin-bottom:14px">
+        <div class="pack-item" data-pre="caminito"><input type="checkbox" id="pre-caminito"><label for="pre-caminito"><i class="ti ti-alert-triangle" style="color:#BA7517;margin-right:5px;font-size:12px"></i>Caminito del Rey — book 4 uger i forvejen, sælger ud</label></div>
+        <div class="pack-item" data-pre="delfin"><input type="checkbox" id="pre-delfin"><label for="pre-delfin"><i class="ti ti-alert-triangle" style="color:#BA7517;margin-right:5px;font-size:12px"></i>Delfinsafari — book 2 uger i forvejen</label></div>
+        <div class="pack-item" data-pre="nogler"><input type="checkbox" id="pre-nogler"><label for="pre-nogler"><i class="ti ti-key" style="color:#993C1D;margin-right:5px;font-size:12px"></i><b>Nøgler hos Thomas</b> — aftale tid omkring 1. juli kl. 17</label></div>
+        <div class="pack-item" data-pre="lejebil"><input type="checkbox" id="pre-lejebil"><label for="pre-lejebil"><i class="ti ti-car" style="color:#185FA5;margin-right:5px;font-size:12px"></i>Book lejebil — sammenlign priser (~€165/12 dage)</label></div>
+        <div class="pack-item" data-pre="padel"><input type="checkbox" id="pre-padel"><label for="pre-padel">Padel — bed concierge arrangere lokale modstandere</label></div>
+        <div class="pack-item" data-pre="malaga-cf"><input type="checkbox" id="pre-malaga-cf"><label for="pre-malaga-cf">Tjek malagacf.com for præsæsonskampe i juli</label></div>
+      </div>
+      <p class="section-label" style="margin-bottom:8px">Husk også</p>
       <div class="tips-grid">
-        <div class="tip"><i class="ti ti-alert-triangle" style="color:#BA7517;flex-shrink:0;margin-top:1px"></i><span>Caminito del Rey — book 4 uger i forvejen, sælger ud</span></div>
-        <div class="tip"><i class="ti ti-alert-triangle" style="color:#BA7517;flex-shrink:0;margin-top:1px"></i><span>Delfinsafari — book 2 uger i forvejen</span></div>
         <div class="tip"><i class="ti ti-info-circle" style="color:#185FA5;flex-shrink:0;margin-top:1px"></i><span>Alcazaba + Gibralfaro gratis søndag efter kl. 14:00</span></div>
         <div class="tip"><i class="ti ti-info-circle" style="color:#185FA5;flex-shrink:0;margin-top:1px"></i><span>Undgå aktiviteter udendørs 12–16 (op til 40°C)</span></div>
-        <div class="tip"><i class="ti ti-check" style="color:#3B6D11;flex-shrink:0;margin-top:1px"></i><span>Padel: bed concierge arrangere lokale modstandere</span></div>
-        <div class="tip"><i class="ti ti-check" style="color:#3B6D11;flex-shrink:0;margin-top:1px"></i><span>Tjek malagacf.com for præsæsonskampe i juli</span></div>
-        <div class="tip"><i class="ti ti-key" style="color:#993C1D;flex-shrink:0;margin-top:1px"></i><span><b>Nøgler hos Thomas 1. juli kl. 17</b> — husk at aftale nærmere</span></div>
-        <div class="tip"><i class="ti ti-car" style="color:#185FA5;flex-shrink:0;margin-top:1px"></i><span>Lejebil ca. €165/12 dage — sammenlign priser, vanvittig konkurrence i området</span></div>
       </div>
     </div>
 
@@ -687,10 +695,16 @@ function initMap() {
       radius:8, fillColor:color, color:'#fff', weight:2, opacity:1, fillOpacity:0.9
     });
     marker._cats = a.cats;
+    const shortDesc = a.desc.length > 90 ? a.desc.slice(0, 90).replace(/\s\S*$/, '') + '…' : a.desc;
     marker.bindPopup(
+      `<div style="width:210px">` +
+      (a.img ? `<img class="mp-img" src="https://images.unsplash.com/${a.img}?w=420&h=240&fit=crop&q=80" onerror="this.style.display='none'" loading="lazy">` : '') +
       `<p class="mp-title">${a.title}</p>` +
+      `<p class="mp-desc">${shortDesc}</p>` +
       `<p class="mp-price">${a.price}</p>` +
-      `<a class="mp-link" href="${a.link}" target="_blank" rel="noopener noreferrer">Læs mere ↗</a>`
+      `<a class="mp-link" href="${a.link}" target="_blank" rel="noopener noreferrer">${a.lt} ↗</a>` +
+      `</div>`,
+      {maxWidth: 250}
     );
     marker.addTo(mapInstance);
     allMarkers.push(marker);
@@ -732,6 +746,30 @@ function showTab(name) {
 navTabs.forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));
 const savedTab = localStorage.getItem('mal26_tab');
 if (savedTab && document.getElementById('tab-' + savedTab)) showTab(savedTab);
+
+// Pre-departure checklist
+const preKey = 'mal26_pre';
+const preDone = new Set(JSON.parse(localStorage.getItem(preKey) || '[]'));
+function updatePreProg() {
+  const items = document.querySelectorAll('[data-pre]');
+  const el = document.getElementById('preChkProg');
+  if (!el) return;
+  el.textContent = preDone.size === items.length ? '✓ Alt klaret!' : `${preDone.size}/${items.length} klaret`;
+}
+document.querySelectorAll('[data-pre]').forEach(div => {
+  const id = div.dataset.pre;
+  const cb = div.querySelector('input');
+  if (preDone.has(id)) { cb.checked = true; div.classList.add('checked'); }
+  div.addEventListener('click', e => {
+    if (e.target.tagName === 'A') return;
+    preDone.has(id) ? preDone.delete(id) : preDone.add(id);
+    localStorage.setItem(preKey, JSON.stringify([...preDone]));
+    cb.checked = preDone.has(id);
+    div.classList.toggle('checked', preDone.has(id));
+    updatePreProg();
+  });
+});
+updatePreProg();
 </script>
 </body>
 </html>
