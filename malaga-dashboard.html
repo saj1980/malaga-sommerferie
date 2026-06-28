@@ -106,6 +106,18 @@
 
   footer { text-align: center; font-size: 12px; color: var(--text3); padding-top: 1rem; }
 
+  /* Lejlighedsvejledning */
+  .apt-guide { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; margin-bottom: 2.5rem; }
+  .apt-block { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 16px 18px; }
+  .apt-block-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .apt-block-title i { font-size: 16px; color: var(--text2); }
+  .apt-addr { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 8px; }
+  .apt-map { margin-bottom: 8px; display: inline-flex; }
+  .apt-note { font-size: 11px; color: #BA7517; margin-bottom: 10px; }
+  .apt-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .apt-list li { font-size: 13px; color: var(--text2); line-height: 1.45; padding-left: 10px; position: relative; }
+  .apt-list li::before { content: '·'; position: absolute; left: 0; color: var(--text3); }
+
   /* Pakkeliste */
   .pack-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
   .ptab { font-size: 13px; padding: 6px 14px; border-radius: 99px; border: 0.5px solid var(--border2); background: transparent; color: var(--text2); cursor: pointer; font-family: inherit; transition: all .15s; }
@@ -203,7 +215,61 @@
     </div>
   </div>
 
-  <p class="section-label">Pakkeliste — klik for at krydse af</p>
+  <p class="section-label">Lejlighedsvejledning</p>
+  <div class="apt-guide">
+
+    <div class="apt-block">
+      <div class="apt-block-title"><i class="ti ti-map-pin"></i> Adresse & ankomst</div>
+      <p class="apt-addr">Block 9, App. A · 2. sal · Av. Fuengirola 5, 29640 Fuengirola</p>
+      <a class="lnk apt-map" href="https://maps.app.goo.gl/JhDSZyh4ABheq4gT6" target="_blank" rel="noopener noreferrer"><i class="ti ti-map-2" style="font-size:12px"></i> Åbn korrekt Maps-link</a>
+      <p class="apt-note">⚠ Google Maps viser ikke korrekt placering — brug ovenstående link.</p>
+      <ul class="apt-list">
+        <li><b>Port:</b> Øverste knap på fjernbetjeningen i nøglebundtet</li>
+        <li><b>Fodgænger:</b> Dør til venstre for porten — åbnes med nøgle</li>
+        <li><b>Garage:</b> Nederste knap på fjernbetjeningen · P-pladser 33 og 34</li>
+        <li><b>Til lejligheden:</b> Elevator fra garage til 2. sal → lejlighed A for enden af Block 9</li>
+      </ul>
+    </div>
+
+    <div class="apt-block">
+      <div class="apt-block-title"><i class="ti ti-shield-lock"></i> Alarm (Verisure)</div>
+      <ul class="apt-list">
+        <li>Alarm aktiveres når døren låses op</li>
+        <li>Før den lille <b>Verisure-nøglering</b> op til alarmpanelet <em>lige inden til højre for døren</em></li>
+        <li>Husk at slå alarmen <b>til</b> igen når I forlader lejligheden</li>
+      </ul>
+    </div>
+
+    <div class="apt-block">
+      <div class="apt-block-title"><i class="ti ti-device-remote"></i> Varmt vand, varme & AC</div>
+      <ul class="apt-list">
+        <li><b>Varmtvandsbeholder:</b> Skab til højre inden køkkenet · Skift fra <em>Holiday Mode</em> → <em>Auto</em> ved ankomst · Sæt tilbage ved afrejse</li>
+        <li><b>Varme & AC:</b> Daikin-display til venstre for fjernsynet · Central styring via KNX-display ved hovedindgangen (slukker også al loftsbelysning)</li>
+        <li><b>Gulvvarme:</b> I begge badeværelser · Husk at slukke ved afrejse</li>
+      </ul>
+    </div>
+
+    <div class="apt-block">
+      <div class="apt-block-title"><i class="ti ti-bulb"></i> Lys, WiFi & apps</div>
+      <ul class="apt-list">
+        <li><b>WiFi:</b> Kode og netværksnavn på routeren på tv-reolen</li>
+        <li><b>Lysdæmpere</b> i alle pendler (spisebord, stuebord, soveværelser) — styres via appen <b>Casambi</b> (App Store / Google Play)</li>
+      </ul>
+    </div>
+
+    <div class="apt-block">
+      <div class="apt-block-title"><i class="ti ti-tools"></i> Praktisk</div>
+      <ul class="apt-list">
+        <li><b>Vaskemaskine + tørretumbler:</b> Kombinationsmaskine i køkkenøen</li>
+        <li><b>Støvsuger:</b> Batteridrevet — støvsug effektivt, batteriet er begrænset</li>
+        <li><b>Grill (Morsø el-grill):</b> Terrassen · Hold midterste knap for at tænde · Højre knap regulerer varme top/bund · Både grill-rist og grill-fad tilgængelig</li>
+        <li><b>Sengetøj & håndklæder:</b> I sengene · Madrasserne slås op ved at hive i den lille strop i fodenden</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <p class="section-label" style="margin-top:2rem">Pakkeliste — klik for at krydse af</p>
   <div class="pack-tabs" id="packTabs">
     <button class="ptab on" data-p="far">Far</button>
     <button class="ptab" data-p="mor">Mor</button>
