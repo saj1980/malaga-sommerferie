@@ -676,6 +676,18 @@ const catColors = {sport:'#185FA5',kids:'#993556',beach:'#0F6E56',culture:'#3C34
 let mapInstance = null;
 let allMarkers = [];
 
+// Approx. straight-line distance (km) between two [lat,lng] points
+function haversineKm([la1,lo1],[la2,lo2]){
+  const R=6371,dL=(la2-la1)*Math.PI/180,dO=(lo2-lo1)*Math.PI/180;
+  const a=Math.sin(dL/2)**2+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dO/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+function driveTime(km){
+  const rd=km*1.35, m=Math.max(5,Math.round(rd/80*60/5)*5);
+  return m<60 ? `${m} min` : `${Math.floor(m/60)}t${m%60?` ${m%60}m`:''}`;
+}
+const HOME_COORDS = [36.536, -4.617]; // Av. Fuengirola 5
+
 function initMap() {
   if (mapInstance) return;
   mapInstance = L.map('map', {zoomControl:true}).setView([36.68, -4.62], 9);
@@ -684,9 +696,13 @@ function initMap() {
     maxZoom:18
   }).addTo(mapInstance);
 
-  // Home base marker
-  L.circleMarker([36.5293, -4.6672], {radius:10,fillColor:'#f59e0b',color:'#fff',weight:2.5,fillOpacity:1})
-    .bindPopup('<p class="mp-title">🏠 Higuerón — Base camp</p><p class="mp-price">Fuengirola</p>')
+  // Home apartment marker
+  const houseIcon = L.divIcon({
+    html:`<div style="background:#f59e0b;border:2.5px solid #fff;border-radius:50%;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 2px 6px rgba(0,0,0,0.28)">🏠</div>`,
+    className:'', iconSize:[26,26], iconAnchor:[13,13], popupAnchor:[0,-13]
+  });
+  L.marker(HOME_COORDS, {icon:houseIcon})
+    .bindPopup('<p class="mp-title">Vores lejlighed</p><p class="mp-price">Av. Fuengirola 5 · Block 9, 2. sal</p>', {maxWidth:200})
     .addTo(mapInstance);
 
   acts.forEach(a => {
@@ -696,14 +712,17 @@ function initMap() {
     });
     marker._cats = a.cats;
     const shortDesc = a.desc.length > 90 ? a.desc.slice(0, 90).replace(/\s\S*$/, '') + '…' : a.desc;
+    const drive = driveTime(haversineKm(HOME_COORDS, [a.lat, a.lng]));
     marker.bindPopup(
       `<div style="width:210px">` +
       (a.img ? `<img class="mp-img" src="https://images.unsplash.com/${a.img}?w=420&h=240&fit=crop&q=80" onerror="this.style.display='none'" loading="lazy">` : '') +
       `<p class="mp-title">${a.title}</p>` +
       `<p class="mp-desc">${shortDesc}</p>` +
       `<p class="mp-price">${a.price}</p>` +
+      `<div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">` +
+      `<span style="font-size:11px;color:#6b6a65"><i class="ti ti-car" style="font-size:11px;margin-right:3px"></i>Ca. ${drive} fra lejlighed</span>` +
       `<a class="mp-link" href="${a.link}" target="_blank" rel="noopener noreferrer">${a.lt} ↗</a>` +
-      `</div>`,
+      `</div></div>`,
       {maxWidth: 250}
     );
     marker.addTo(mapInstance);
