@@ -20,8 +20,39 @@
       --border: rgba(255,255,255,0.12); --border2: rgba(255,255,255,0.22);
     }
   }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg3); color: var(--text); min-height: 100vh; padding: 2rem 1rem; }
-  .wrap { max-width: 900px; margin: 0 auto; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg3); color: var(--text); min-height: 100vh; padding: 0 0 2rem; }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 1rem; }
+
+  /* Navbar */
+  .navbar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+  }
+  @media (prefers-color-scheme: dark) {
+    .navbar { background: rgba(28,28,26,0.88); }
+  }
+  .nav-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; align-items: center; gap: 16px;
+    padding: 0 1rem; height: 52px;
+  }
+  .nav-logo { font-size: 13px; font-weight: 500; color: var(--text2); white-space: nowrap; flex-shrink: 0; }
+  .nav-tabs { display: flex; gap: 2px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .ntab {
+    font-size: 13px; font-family: inherit; padding: 6px 14px;
+    border: none; background: transparent; color: var(--text2);
+    cursor: pointer; border-radius: var(--radius); white-space: nowrap;
+    transition: background .15s, color .15s;
+  }
+  .ntab:hover { background: var(--bg2); color: var(--text); }
+  .ntab.on { background: var(--bg3); color: var(--text); font-weight: 500; }
+
+  /* Tab sections */
+  .tab-section { display: none; padding-top: 1.5rem; }
+  .tab-section.on { display: block; }
 
   h1 { font-size: 26px; font-weight: 500; margin-bottom: 4px; }
   .sub { font-size: 14px; color: var(--text2); margin-bottom: 1.5rem; }
@@ -104,7 +135,7 @@
   .tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .tip { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--text2); line-height: 1.4; }
 
-  footer { text-align: center; font-size: 12px; color: var(--text3); padding-top: 1rem; }
+  footer { text-align: center; font-size: 12px; color: var(--text3); padding-top: 1rem; margin-top: 2rem; }
 
   /* Lejlighedsvejledning */
   .apt-guide { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; margin-bottom: 2.5rem; }
@@ -134,153 +165,192 @@
 </style>
 </head>
 <body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <span class="nav-logo">✈ Malaga 2026</span>
+    <div class="nav-tabs">
+      <button class="ntab on" data-tab="oversigt">Oversigt</button>
+      <button class="ntab" data-tab="aktiviteter">Aktiviteter</button>
+      <button class="ntab" data-tab="dagsplan">Dagsplan</button>
+      <button class="ntab" data-tab="lejlighed">Lejlighed</button>
+      <button class="ntab" data-tab="pakkeliste">Pakkeliste</button>
+    </div>
+  </div>
+</nav>
+
 <div class="wrap">
 
-  <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:1.5rem">
-    <div>
-      <h1>Malaga sommerferie</h1>
-      <p class="sub">4.–15. juli 2026 &nbsp;·&nbsp; Higuerón Hotel, Fuengirola &nbsp;·&nbsp; Emily (6), Noah (12), Elias (15)</p>
-    </div>
-    <div class="stats">
-      <div class="stat"><div class="stat-n" id="cnt">—</div><div class="stat-l">dage til afrejse</div></div>
-      <div class="stat"><div class="stat-n">35°</div><div class="stat-l">juli snit</div></div>
-      <div class="stat"><div class="stat-n">27°</div><div class="stat-l">havtemperatur</div></div>
-    </div>
-  </div>
+  <!-- OVERSIGT -->
+  <div class="tab-section on" id="tab-oversigt">
 
-  <div class="flights">
-    <div class="flight-card">
-      <div class="flight-header">
-        <div>
-          <span class="flight-route">CPH &rarr; AGP</span>
-          <div style="font-size:12px;color:var(--text2);margin-top:2px">Lørdag 4. juli 2026</div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:1.5rem">
+      <div>
+        <h1>Malaga sommerferie</h1>
+        <p class="sub">4.–15. juli 2026 &nbsp;·&nbsp; Higuerón Hotel, Fuengirola &nbsp;·&nbsp; Emily (6), Noah (12), Elias (15)</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="stat-n" id="cnt">—</div><div class="stat-l">dage til afrejse</div></div>
+        <div class="stat"><div class="stat-n">35°</div><div class="stat-l">juli snit</div></div>
+        <div class="stat"><div class="stat-n">27°</div><div class="stat-l">havtemperatur</div></div>
+      </div>
+    </div>
+
+    <div class="flights">
+      <div class="flight-card">
+        <div class="flight-header">
+          <div>
+            <span class="flight-route">CPH &rarr; AGP</span>
+            <div style="font-size:12px;color:var(--text2);margin-top:2px">Lørdag 4. juli 2026</div>
+          </div>
+          <span class="flight-badge badge-out"><i class="ti ti-plane-departure" style="font-size:10px"></i> Udrejse</span>
         </div>
-        <span class="flight-badge badge-out"><i class="ti ti-plane-departure" style="font-size:10px"></i> Udrejse</span>
-      </div>
-      <div class="flight-times">
-        <span class="ft">06:50</span>
-        <div class="ft-sep"><span>3h 50m · SK2807</span></div>
-        <span class="ft">10:40</span>
-      </div>
-      <div class="flight-meta">
-        <span><i class="ti ti-building" style="font-size:12px"></i> CPH Terminal 3</span>
-        <span>Ankomst Malaga</span>
-      </div>
-    </div>
-    <div class="flight-card">
-      <div class="flight-header">
-        <div>
-          <span class="flight-route">AGP &rarr; CPH</span>
-          <div style="font-size:12px;color:var(--text2);margin-top:2px">Onsdag 15. juli 2026</div>
+        <div class="flight-times">
+          <span class="ft">06:50</span>
+          <div class="ft-sep"><span>3h 50m · SK2807</span></div>
+          <span class="ft">10:40</span>
         </div>
-        <span class="flight-badge badge-ret"><i class="ti ti-plane-arrival" style="font-size:10px"></i> Hjemrejse</span>
+        <div class="flight-meta">
+          <span><i class="ti ti-building" style="font-size:12px"></i> CPH Terminal 3</span>
+          <span>Ankomst Malaga</span>
+        </div>
       </div>
-      <div class="flight-times">
-        <span class="ft">20:10</span>
-        <div class="ft-sep"><span>3h 35m · SK588</span></div>
-        <span class="ft">23:45</span>
+      <div class="flight-card">
+        <div class="flight-header">
+          <div>
+            <span class="flight-route">AGP &rarr; CPH</span>
+            <div style="font-size:12px;color:var(--text2);margin-top:2px">Onsdag 15. juli 2026</div>
+          </div>
+          <span class="flight-badge badge-ret"><i class="ti ti-plane-arrival" style="font-size:10px"></i> Hjemrejse</span>
+        </div>
+        <div class="flight-times">
+          <span class="ft">20:10</span>
+          <div class="ft-sep"><span>3h 35m · SK588</span></div>
+          <span class="ft">23:45</span>
+        </div>
+        <div class="flight-meta">
+          <span>Afgang Malaga</span>
+          <span><i class="ti ti-building" style="font-size:12px"></i> CPH Terminal 3</span>
+        </div>
       </div>
-      <div class="flight-meta">
-        <span>Afgang Malaga</span>
-        <span><i class="ti ti-building" style="font-size:12px"></i> CPH Terminal 3</span>
+    </div>
+
+    <div class="tips">
+      <p class="section-label" style="margin-bottom:12px">Husk at booke inden afrejse</p>
+      <div class="tips-grid">
+        <div class="tip"><i class="ti ti-alert-triangle" style="color:#BA7517;flex-shrink:0;margin-top:1px"></i><span>Caminito del Rey — book 4 uger i forvejen, sælger ud</span></div>
+        <div class="tip"><i class="ti ti-alert-triangle" style="color:#BA7517;flex-shrink:0;margin-top:1px"></i><span>Delfinsafari — book 2 uger i forvejen</span></div>
+        <div class="tip"><i class="ti ti-info-circle" style="color:#185FA5;flex-shrink:0;margin-top:1px"></i><span>Alcazaba + Gibralfaro gratis søndag efter kl. 14:00</span></div>
+        <div class="tip"><i class="ti ti-info-circle" style="color:#185FA5;flex-shrink:0;margin-top:1px"></i><span>Undgå aktiviteter udendørs 12–16 (op til 40°C)</span></div>
+        <div class="tip"><i class="ti ti-check" style="color:#3B6D11;flex-shrink:0;margin-top:1px"></i><span>Padel: bed concierge arrangere lokale modstandere</span></div>
+        <div class="tip"><i class="ti ti-check" style="color:#3B6D11;flex-shrink:0;margin-top:1px"></i><span>Tjek malagacf.com for præsæsonskampe i juli</span></div>
       </div>
     </div>
-  </div>
-
-  <div class="filters" id="filters">
-    <button class="fb on" data-f="all">Alle aktiviteter</button>
-    <button class="fb" data-f="sport"><i class="ti ti-ball-tennis"></i> Sport</button>
-    <button class="fb" data-f="beach"><i class="ti ti-waves"></i> Strand & vand</button>
-    <button class="fb" data-f="kids"><i class="ti ti-star"></i> Emily (6 år)</button>
-    <button class="fb" data-f="culture"><i class="ti ti-building-castle"></i> Kultur</button>
-    <button class="fb" data-f="trip"><i class="ti ti-car"></i> Dagture</button>
-    <button class="fb" data-f="free"><i class="ti ti-gift"></i> Gratis</button>
-    <button class="fb" data-f="food"><i class="ti ti-chef-hat"></i> Mad</button>
-  </div>
-
-  <div class="grid" id="grid"></div>
-
-  <p class="section-label">12-dages plan — klik for at markere som klaret</p>
-  <div class="day-grid" id="days"></div>
-
-  <div class="tips">
-    <p class="section-label" style="margin-bottom:12px">Husk at booke inden afrejse</p>
-    <div class="tips-grid">
-      <div class="tip"><i class="ti ti-alert-triangle" style="color:#BA7517;flex-shrink:0;margin-top:1px"></i><span>Caminito del Rey — book 4 uger i forvejen, sælger ud</span></div>
-      <div class="tip"><i class="ti ti-alert-triangle" style="color:#BA7517;flex-shrink:0;margin-top:1px"></i><span>Delfinsafari — book 2 uger i forvejen</span></div>
-      <div class="tip"><i class="ti ti-info-circle" style="color:#185FA5;flex-shrink:0;margin-top:1px"></i><span>Alcazaba + Gibralfaro gratis søndag efter kl. 14:00</span></div>
-      <div class="tip"><i class="ti ti-info-circle" style="color:#185FA5;flex-shrink:0;margin-top:1px"></i><span>Undgå aktiviteter udendørs 12–16 (op til 40°C)</span></div>
-      <div class="tip"><i class="ti ti-check" style="color:#3B6D11;flex-shrink:0;margin-top:1px"></i><span>Padel: bed concierge arrangere lokale modstandere</span></div>
-      <div class="tip"><i class="ti ti-check" style="color:#3B6D11;flex-shrink:0;margin-top:1px"></i><span>Tjek malagacf.com for præsæsonskampe i juli</span></div>
-    </div>
-  </div>
-
-  <p class="section-label">Lejlighedsvejledning</p>
-  <div class="apt-guide">
-
-    <div class="apt-block">
-      <div class="apt-block-title"><i class="ti ti-map-pin"></i> Adresse & ankomst</div>
-      <p class="apt-addr">Block 9, App. A · 2. sal · Av. Fuengirola 5, 29640 Fuengirola</p>
-      <a class="lnk apt-map" href="https://maps.app.goo.gl/JhDSZyh4ABheq4gT6" target="_blank" rel="noopener noreferrer"><i class="ti ti-map-2" style="font-size:12px"></i> Åbn korrekt Maps-link</a>
-      <p class="apt-note">⚠ Google Maps viser ikke korrekt placering — brug ovenstående link.</p>
-      <ul class="apt-list">
-        <li><b>Port:</b> Øverste knap på fjernbetjeningen i nøglebundtet</li>
-        <li><b>Fodgænger:</b> Dør til venstre for porten — åbnes med nøgle</li>
-        <li><b>Garage:</b> Nederste knap på fjernbetjeningen · P-pladser 33 og 34</li>
-        <li><b>Til lejligheden:</b> Elevator fra garage til 2. sal → lejlighed A for enden af Block 9</li>
-      </ul>
-    </div>
-
-    <div class="apt-block">
-      <div class="apt-block-title"><i class="ti ti-shield-lock"></i> Alarm (Verisure)</div>
-      <ul class="apt-list">
-        <li>Alarm aktiveres når døren låses op</li>
-        <li>Før den lille <b>Verisure-nøglering</b> op til alarmpanelet <em>lige inden til højre for døren</em></li>
-        <li>Husk at slå alarmen <b>til</b> igen når I forlader lejligheden</li>
-      </ul>
-    </div>
-
-    <div class="apt-block">
-      <div class="apt-block-title"><i class="ti ti-device-remote"></i> Varmt vand, varme & AC</div>
-      <ul class="apt-list">
-        <li><b>Varmtvandsbeholder:</b> Skab til højre inden køkkenet · Skift fra <em>Holiday Mode</em> → <em>Auto</em> ved ankomst · Sæt tilbage ved afrejse</li>
-        <li><b>Varme & AC:</b> Daikin-display til venstre for fjernsynet · Central styring via KNX-display ved hovedindgangen (slukker også al loftsbelysning)</li>
-        <li><b>Gulvvarme:</b> I begge badeværelser · Husk at slukke ved afrejse</li>
-      </ul>
-    </div>
-
-    <div class="apt-block">
-      <div class="apt-block-title"><i class="ti ti-bulb"></i> Lys, WiFi & apps</div>
-      <ul class="apt-list">
-        <li><b>WiFi:</b> Kode og netværksnavn på routeren på tv-reolen</li>
-        <li><b>Lysdæmpere</b> i alle pendler (spisebord, stuebord, soveværelser) — styres via appen <b>Casambi</b> (App Store / Google Play)</li>
-      </ul>
-    </div>
-
-    <div class="apt-block">
-      <div class="apt-block-title"><i class="ti ti-tools"></i> Praktisk</div>
-      <ul class="apt-list">
-        <li><b>Vaskemaskine + tørretumbler:</b> Kombinationsmaskine i køkkenøen</li>
-        <li><b>Støvsuger:</b> Batteridrevet — støvsug effektivt, batteriet er begrænset</li>
-        <li><b>Grill (Morsø el-grill):</b> Terrassen · Hold midterste knap for at tænde · Højre knap regulerer varme top/bund · Både grill-rist og grill-fad tilgængelig</li>
-        <li><b>Sengetøj & håndklæder:</b> I sengene · Madrasserne slås op ved at hive i den lille strop i fodenden</li>
-      </ul>
-    </div>
 
   </div>
 
-  <p class="section-label" style="margin-top:2rem">Pakkeliste — klik for at krydse af</p>
-  <div class="pack-tabs" id="packTabs">
-    <button class="ptab on" data-p="far">Far</button>
-    <button class="ptab" data-p="mor">Mor</button>
-    <button class="ptab" data-p="emily">Emily (6)</button>
-    <button class="ptab" data-p="noah">Noah (12)</button>
-    <button class="ptab" data-p="elias">Elias (15)</button>
-  </div>
-  <p class="pack-progress" id="packProg"></p>
-  <div id="packPanels"></div>
+  <!-- AKTIVITETER -->
+  <div class="tab-section" id="tab-aktiviteter">
 
-  <footer style="margin-top:2rem">Malaga Ferie 2026 &nbsp;·&nbsp; Genereret med Claude</footer>
+    <div class="filters" id="filters">
+      <button class="fb on" data-f="all">Alle aktiviteter</button>
+      <button class="fb" data-f="sport"><i class="ti ti-ball-tennis"></i> Sport</button>
+      <button class="fb" data-f="beach"><i class="ti ti-waves"></i> Strand & vand</button>
+      <button class="fb" data-f="kids"><i class="ti ti-star"></i> Emily (6 år)</button>
+      <button class="fb" data-f="culture"><i class="ti ti-building-castle"></i> Kultur</button>
+      <button class="fb" data-f="trip"><i class="ti ti-car"></i> Dagture</button>
+      <button class="fb" data-f="free"><i class="ti ti-gift"></i> Gratis</button>
+      <button class="fb" data-f="food"><i class="ti ti-chef-hat"></i> Mad</button>
+    </div>
+
+    <div class="grid" id="grid"></div>
+
+  </div>
+
+  <!-- DAGSPLAN -->
+  <div class="tab-section" id="tab-dagsplan">
+
+    <p class="section-label">12-dages plan — klik for at markere som klaret</p>
+    <div class="day-grid" id="days"></div>
+
+  </div>
+
+  <!-- LEJLIGHED -->
+  <div class="tab-section" id="tab-lejlighed">
+
+    <p class="section-label">Lejlighedsvejledning</p>
+    <div class="apt-guide">
+
+      <div class="apt-block">
+        <div class="apt-block-title"><i class="ti ti-map-pin"></i> Adresse & ankomst</div>
+        <p class="apt-addr">Block 9, App. A · 2. sal · Av. Fuengirola 5, 29640 Fuengirola</p>
+        <a class="lnk apt-map" href="https://maps.app.goo.gl/JhDSZyh4ABheq4gT6" target="_blank" rel="noopener noreferrer"><i class="ti ti-map-2" style="font-size:12px"></i> Åbn korrekt Maps-link</a>
+        <p class="apt-note">⚠ Google Maps viser ikke korrekt placering — brug ovenstående link.</p>
+        <ul class="apt-list">
+          <li><b>Port:</b> Øverste knap på fjernbetjeningen i nøglebundtet</li>
+          <li><b>Fodgænger:</b> Dør til venstre for porten — åbnes med nøgle</li>
+          <li><b>Garage:</b> Nederste knap på fjernbetjeningen · P-pladser 33 og 34</li>
+          <li><b>Til lejligheden:</b> Elevator fra garage til 2. sal → lejlighed A for enden af Block 9</li>
+        </ul>
+      </div>
+
+      <div class="apt-block">
+        <div class="apt-block-title"><i class="ti ti-shield-lock"></i> Alarm (Verisure)</div>
+        <ul class="apt-list">
+          <li>Alarm aktiveres når døren låses op</li>
+          <li>Før den lille <b>Verisure-nøglering</b> op til alarmpanelet <em>lige inden til højre for døren</em></li>
+          <li>Husk at slå alarmen <b>til</b> igen når I forlader lejligheden</li>
+        </ul>
+      </div>
+
+      <div class="apt-block">
+        <div class="apt-block-title"><i class="ti ti-device-remote"></i> Varmt vand, varme & AC</div>
+        <ul class="apt-list">
+          <li><b>Varmtvandsbeholder:</b> Skab til højre inden køkkenet · Skift fra <em>Holiday Mode</em> → <em>Auto</em> ved ankomst · Sæt tilbage ved afrejse</li>
+          <li><b>Varme & AC:</b> Daikin-display til venstre for fjernsynet · Central styring via KNX-display ved hovedindgangen (slukker også al loftsbelysning)</li>
+          <li><b>Gulvvarme:</b> I begge badeværelser · Husk at slukke ved afrejse</li>
+        </ul>
+      </div>
+
+      <div class="apt-block">
+        <div class="apt-block-title"><i class="ti ti-bulb"></i> Lys, WiFi & apps</div>
+        <ul class="apt-list">
+          <li><b>WiFi:</b> Kode og netværksnavn på routeren på tv-reolen</li>
+          <li><b>Lysdæmpere</b> i alle pendler (spisebord, stuebord, soveværelser) — styres via appen <b>Casambi</b> (App Store / Google Play)</li>
+        </ul>
+      </div>
+
+      <div class="apt-block">
+        <div class="apt-block-title"><i class="ti ti-tools"></i> Praktisk</div>
+        <ul class="apt-list">
+          <li><b>Vaskemaskine + tørretumbler:</b> Kombinationsmaskine i køkkenøen</li>
+          <li><b>Støvsuger:</b> Batteridrevet — støvsug effektivt, batteriet er begrænset</li>
+          <li><b>Grill (Morsø el-grill):</b> Terrassen · Hold midterste knap for at tænde · Højre knap regulerer varme top/bund · Både grill-rist og grill-fad tilgængelig</li>
+          <li><b>Sengetøj & håndklæder:</b> I sengene · Madrasserne slås op ved at hive i den lille strop i fodenden</li>
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- PAKKELISTE -->
+  <div class="tab-section" id="tab-pakkeliste">
+
+    <p class="section-label">Pakkeliste — klik for at krydse af</p>
+    <div class="pack-tabs" id="packTabs">
+      <button class="ptab on" data-p="far">Far</button>
+      <button class="ptab" data-p="mor">Mor</button>
+      <button class="ptab" data-p="emily">Emily (6)</button>
+      <button class="ptab" data-p="noah">Noah (12)</button>
+      <button class="ptab" data-p="elias">Elias (15)</button>
+    </div>
+    <p class="pack-progress" id="packProg"></p>
+    <div id="packPanels"></div>
+
+  </div>
+
+  <footer>Malaga Ferie 2026 &nbsp;·&nbsp; Genereret med Claude</footer>
 </div>
 
 <script>
@@ -361,20 +431,19 @@ dayPlan.forEach(day => {
     if (done.has(day.n)) done.delete(day.n); else done.add(day.n);
     localStorage.setItem('mal26', JSON.stringify([...done]));
     el.classList.toggle('done');
-    document.getElementById('cnt').textContent = 12 - done.size;
+    updateCountdown();
   });
   daysEl.appendChild(el);
 });
 
-document.getElementById('cnt').textContent = 12 - (JSON.parse(localStorage.getItem('mal26') || '[]')).length;
-
 // Countdown
-(function() {
+function updateCountdown() {
   const dep = new Date('2026-07-04T00:00:00');
   const today = new Date(); today.setHours(0,0,0,0);
   const diff = Math.max(0, Math.round((dep - today) / 86400000));
   document.getElementById('cnt').textContent = diff === 0 ? 'God tur!' : diff;
-})();
+}
+updateCountdown();
 
 // Packing lists
 const packData = {
@@ -451,6 +520,18 @@ document.getElementById('filters').addEventListener('click', e => {
     c.classList.toggle('hidden', f !== 'all' && !c.dataset.cats.includes(f));
   });
 });
+
+// Tab navigation
+const navTabs = document.querySelectorAll('.ntab');
+function showTab(name) {
+  navTabs.forEach(t => t.classList.toggle('on', t.dataset.tab === name));
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.toggle('on', s.id === 'tab-' + name));
+  localStorage.setItem('mal26_tab', name);
+  window.scrollTo(0, 0);
+}
+navTabs.forEach(t => t.addEventListener('click', () => showTab(t.dataset.tab)));
+const savedTab = localStorage.getItem('mal26_tab');
+if (savedTab && document.getElementById('tab-' + savedTab)) showTab(savedTab);
 </script>
 </body>
 </html>
