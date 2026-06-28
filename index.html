@@ -697,7 +697,7 @@ function driveTime(km){
   const rd=km*1.35, m=Math.max(5,Math.round(rd/80*60/5)*5);
   return m<60 ? `${m} min` : `${Math.floor(m/60)}t${m%60?` ${m%60}m`:''}`;
 }
-const HOME_COORDS = [36.536, -4.617]; // Av. Fuengirola 5
+const HOME_COORDS = [36.531, -4.662]; // Av. Fuengirola 5 — tæt ved Higuerón
 
 function initMap() {
   if (mapInstance) return;
