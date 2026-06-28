@@ -105,6 +105,20 @@
   .tip { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--text2); line-height: 1.4; }
 
   footer { text-align: center; font-size: 12px; color: var(--text3); padding-top: 1rem; }
+
+  /* Pakkeliste */
+  .pack-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .ptab { font-size: 13px; padding: 6px 14px; border-radius: 99px; border: 0.5px solid var(--border2); background: transparent; color: var(--text2); cursor: pointer; font-family: inherit; transition: all .15s; }
+  .ptab.on { background: var(--text); color: var(--bg); border-color: transparent; }
+  .ptab:hover:not(.on) { background: var(--bg2); }
+  .pack-panel { display: none; background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 16px 20px; }
+  .pack-panel.on { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 4px 24px; }
+  .pack-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 0.5px solid var(--border); cursor: pointer; user-select: none; }
+  .pack-item:last-child { border-bottom: none; }
+  .pack-item input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--text); cursor: pointer; flex-shrink: 0; }
+  .pack-item label { font-size: 13px; color: var(--text); cursor: pointer; line-height: 1.3; }
+  .pack-item.checked label { text-decoration: line-through; color: var(--text3); }
+  .pack-progress { font-size: 12px; color: var(--text3); margin-bottom: 10px; }
 </style>
 </head>
 <body>
@@ -116,7 +130,7 @@
       <p class="sub">4.–15. juli 2026 &nbsp;·&nbsp; Higuerón Hotel, Fuengirola &nbsp;·&nbsp; Emily (6), Noah (12), Elias (15)</p>
     </div>
     <div class="stats">
-      <div class="stat"><div class="stat-n" id="cnt">12</div><div class="stat-l">dage tilbage</div></div>
+      <div class="stat"><div class="stat-n" id="cnt">—</div><div class="stat-l">dage til afrejse</div></div>
       <div class="stat"><div class="stat-n">35°</div><div class="stat-l">juli snit</div></div>
       <div class="stat"><div class="stat-n">27°</div><div class="stat-l">havtemperatur</div></div>
     </div>
@@ -189,7 +203,18 @@
     </div>
   </div>
 
-  <footer>Malaga Ferie 2026 &nbsp;·&nbsp; Genereret med Claude</footer>
+  <p class="section-label">Pakkeliste — klik for at krydse af</p>
+  <div class="pack-tabs" id="packTabs">
+    <button class="ptab on" data-p="far">Far</button>
+    <button class="ptab" data-p="mor">Mor</button>
+    <button class="ptab" data-p="emily">Emily (6)</button>
+    <button class="ptab" data-p="noah">Noah (12)</button>
+    <button class="ptab" data-p="elias">Elias (15)</button>
+  </div>
+  <p class="pack-progress" id="packProg"></p>
+  <div id="packPanels"></div>
+
+  <footer style="margin-top:2rem">Malaga Ferie 2026 &nbsp;·&nbsp; Genereret med Claude</footer>
 </div>
 
 <script>
@@ -276,6 +301,78 @@ dayPlan.forEach(day => {
 });
 
 document.getElementById('cnt').textContent = 12 - (JSON.parse(localStorage.getItem('mal26') || '[]')).length;
+
+// Countdown
+(function() {
+  const dep = new Date('2026-07-04T00:00:00');
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diff = Math.max(0, Math.round((dep - today) / 86400000));
+  document.getElementById('cnt').textContent = diff === 0 ? 'God tur!' : diff;
+})();
+
+// Packing lists
+const packData = {
+  far: ['Pas / ID-kort','Pung + betalingskort','Kontanter (€)','Telefon + oplader','Solbriller','Badetøj (×3)','Sandaler + sneakers','T-shirts (×6)','Shorts (×4)','Solcreme SPF 50','Lægemidler (ibuprofen, plaster)','Rejseforsikring (app/print)','Høretelefoner','Oplader til bilen'],
+  mor: ['Pas / ID-kort','Pung + betalingskort','Telefon + oplader','Solbriller + solhat','Bikini/badedragt (×2)','Sandaler + sko','Kjoler/tøj (×6)','Solcreme SPF 50','Makeuppose','Hårtørrer / glattejern','Rejseforsikring (app/print)','Smykker & accessories'],
+  emily: ['Pas / ID-kort','Tøj (×7 sæt)','Badetøj (×3)','Svømmeveste / armbind','Sandaler + sko','Solcreme SPF 50+ børn','Solhat','Badelegetøj (spand & skovl)','Yndlingsdyr/bamse','Tablet + høretelefoner','Snacks til flyet','Tegnegrejer / farver'],
+  noah: ['Pas / ID-kort','Tøj (×7 sæt)','Badetøj (×3)','Sneakers + sandaler','Solcreme SPF 30-50','Solbriller','Fodboldstøvler','Telefon + oplader','Gaming-enhed til flyet','Høretelefoner','Lommepenge (€)'],
+  elias: ['Pas / ID-kort','Tøj (×7 sæt)','Badetøj (×3)','Sneakers + sandaler','Solcreme SPF 30','Solbriller','Telefon + oplader','Høretelefoner (noise cancelling)','Lommepenge (€)','Powerbank','Bog / musik til rejsen']
+};
+
+const packKey = p => 'pack26_' + p;
+const packState = {};
+Object.keys(packData).forEach(p => {
+  packState[p] = new Set(JSON.parse(localStorage.getItem(packKey(p)) || '[]'));
+});
+
+function renderPanels(activeP) {
+  const container = document.getElementById('packPanels');
+  container.innerHTML = '';
+  Object.keys(packData).forEach(p => {
+    const panel = document.createElement('div');
+    panel.className = 'pack-panel' + (p === activeP ? ' on' : '');
+    panel.id = 'panel_' + p;
+    packData[p].forEach((item, i) => {
+      const id = p + '_' + i;
+      const checked = packState[p].has(i);
+      const div = document.createElement('div');
+      div.className = 'pack-item' + (checked ? ' checked' : '');
+      div.innerHTML = `<input type="checkbox" id="${id}"${checked ? ' checked' : ''}><label for="${id}">${item}</label>`;
+      div.addEventListener('click', (e) => {
+        if (packState[p].has(i)) packState[p].delete(i); else packState[p].add(i);
+        localStorage.setItem(packKey(p), JSON.stringify([...packState[p]]));
+        div.classList.toggle('checked');
+        div.querySelector('input').checked = packState[p].has(i);
+        updateProgress(activeP);
+      });
+      panel.appendChild(div);
+    });
+    container.appendChild(panel);
+  });
+  updateProgress(activeP);
+}
+
+function updateProgress(p) {
+  const total = packData[p].length;
+  const done = packState[p].size;
+  document.getElementById('packProg').textContent = done === total
+    ? `✓ ${p.charAt(0).toUpperCase()+p.slice(1)} er pakket!`
+    : `${done} / ${total} pakket`;
+}
+
+let currentPack = 'far';
+renderPanels(currentPack);
+
+document.getElementById('packTabs').addEventListener('click', e => {
+  const tab = e.target.closest('.ptab[data-p]');
+  if (!tab) return;
+  document.querySelectorAll('.ptab').forEach(t => t.classList.remove('on'));
+  tab.classList.add('on');
+  currentPack = tab.dataset.p;
+  document.querySelectorAll('.pack-panel').forEach(p => p.classList.remove('on'));
+  document.getElementById('panel_' + currentPack).classList.add('on');
+  updateProgress(currentPack);
+});
 
 // Filters
 document.getElementById('filters').addEventListener('click', e => {
