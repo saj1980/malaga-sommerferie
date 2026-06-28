@@ -167,7 +167,9 @@
   .ptab.on { background: var(--text); color: var(--bg); border-color: transparent; }
   .ptab:hover:not(.on) { background: var(--bg2); }
   .pack-panel { display: none; background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 16px 20px; }
-  .pack-panel.on { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 4px 24px; }
+  .pack-panel.on { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0 24px; }
+  .pack-cat-header { grid-column: 1 / -1; font-size: 10px; font-weight: 600; color: var(--text3); letter-spacing: .07em; text-transform: uppercase; padding: 14px 0 6px; border-bottom: 0.5px solid var(--border); margin-bottom: 2px; }
+  .pack-cat-header:first-child { padding-top: 4px; }
   .pack-item { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 0.5px solid var(--border); cursor: pointer; user-select: none; }
   .pack-item:last-child { border-bottom: none; }
   .pack-item input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--text); cursor: pointer; flex-shrink: 0; }
@@ -368,13 +370,19 @@
       </div>
 
       <div class="apt-block">
-        <div class="apt-block-title"><i class="ti ti-train"></i> Transport fra lufthavn</div>
+        <div class="apt-block-title"><i class="ti ti-train"></i> Transport fra lufthavn (AGP)</div>
         <ul class="apt-list">
-          <li><b>Tog:</b> Direkte fra AGP lufthavn til station <em>Caravajal</em> — nemmest og billigst</li>
-          <li><b>Herfra til lejligheden:</b> Ca. 1 km — men pænt stejl bakke op med store kufferter</li>
-          <li><b>Gratis shuttle:</b> Kører rundt i området — god løsning med bagage</li>
-          <li><b>Über:</b> Ca. €5 fra Caravajal station op til lejligheden</li>
+          <li><b>Tog — Cercanías C1:</b> Fra <em>Aeropuerto</em> station → <em>Caravajal</em> · Ca. 25 min · Afgår ca. hvert 20 min · Ca. €2–3 pr. person · Billigste løsning</li>
+          <li><b>Fra Caravajal til lejlighed:</b> ~1 km, men stejl bakke — med store kufferter: tag shuttle eller Über</li>
+          <li><b>Gratis shuttle:</b> Kører rundt i området nær lejligheden — spørg Thomas om ruteinfo</li>
+          <li><b>Über / taxa:</b> Ca. €5 fra Caravajal op til lejligheden · Ca. €35–45 direkte fra lufthavnen</li>
         </ul>
+        <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px">
+          <span style="font-size:11px;font-weight:600;color:var(--text3);width:100%;margin-bottom:2px">APPS TIL TAXA & RIDE</span>
+          <a href="https://uber.com" target="_blank" rel="noopener noreferrer" class="lnk"><i class="ti ti-car" style="font-size:11px"></i> Über</a>
+          <a href="https://cabify.com" target="_blank" rel="noopener noreferrer" class="lnk"><i class="ti ti-car" style="font-size:11px"></i> Cabify</a>
+          <a href="https://free-now.com" target="_blank" rel="noopener noreferrer" class="lnk"><i class="ti ti-taxi" style="font-size:11px"></i> Free Now</a>
+        </div>
       </div>
 
       <div class="apt-block">
@@ -520,17 +528,53 @@ function updateCountdown() {
 }
 updateCountdown();
 
-// Packing lists
+// Packing lists — grouped by category
 const packData = {
-  far: ['Pas / ID-kort','Pung + betalingskort','Kontanter (€)','Telefon + oplader','Solbriller','Badetøj (×3)','Sandaler + sneakers','T-shirts (×6)','Shorts (×4)','Solcreme SPF 50','Lægemidler (ibuprofen, plaster)','Rejseforsikring (app/print)','Høretelefoner','Oplader til bilen'],
-  mor: ['Pas / ID-kort','Pung + betalingskort','Telefon + oplader','Solbriller + solhat','Bikini/badedragt (×2)','Sandaler + sko','Kjoler/tøj (×6)','Solcreme SPF 50','Makeuppose','Hårtørrer / glattejern','Rejseforsikring (app/print)','Smykker & accessories'],
-  emily: ['Pas / ID-kort','Tøj (×7 sæt)','Badetøj (×3)','Svømmeveste / armbind','Sandaler + sko','Solcreme SPF 50+ børn','Solhat','Badelegetøj (spand & skovl)','Yndlingsdyr/bamse','Tablet + høretelefoner','Snacks til flyet','Tegnegrejer / farver'],
-  noah: ['Pas / ID-kort','Tøj (×7 sæt)','Badetøj (×3)','Sneakers + sandaler','Solcreme SPF 30-50','Solbriller','Fodboldstøvler','Telefon + oplader','Gaming-enhed til flyet','Høretelefoner','Lommepenge (€)'],
-  elias: ['Pas / ID-kort','Tøj (×7 sæt)','Badetøj (×3)','Sneakers + sandaler','Solcreme SPF 30','Solbriller','Telefon + oplader','Høretelefoner (noise cancelling)','Lommepenge (€)','Powerbank','Bog / musik til rejsen']
+  far: [
+    {cat:'Dokumenter', items:['Pas / ID-kort','Rejseforsikring (app/print)','Betalingskort','Kontanter (€)']},
+    {cat:'Tøj', items:['T-shirts (×6)','Shorts (×4)','Badetøj (×3)','Sandaler','Sneakers','Solbriller','Solhat']},
+    {cat:'Toiletartikler', items:['Solcreme SPF 50','Barberskraber','Deodorant','Tandpasta + tandbørste','Toilettaske']},
+    {cat:'Sundhed', items:['Ibuprofen + paracetamol','Plaster + forbinding','Diarré-medicin','Antihistamin']},
+    {cat:'Elektronik', items:['Telefon + oplader','Høretelefoner','Powerbank','Bil-oplader']},
+  ],
+  mor: [
+    {cat:'Dokumenter', items:['Pas / ID-kort','Rejseforsikring (app/print)','Betalingskort']},
+    {cat:'Tøj', items:['Kjoler/tøj (×6)','Bikini/badedragt (×2)','Sandaler','Sko','Solbriller','Solhat']},
+    {cat:'Toiletartikler', items:['Solcreme SPF 50','Makeuppose','Hårtørrer / glattejern','Parfume','Deodorant','Tandpasta + tandbørste']},
+    {cat:'Elektronik', items:['Telefon + oplader']},
+    {cat:'Andet', items:['Smykker & accessories','Håndtaske']},
+  ],
+  emily: [
+    {cat:'Dokumenter', items:['Pas / ID-kort']},
+    {cat:'Tøj', items:['Tøj (×7 sæt)','Badetøj (×3)','UV-beskyttelsesdragt','Sandaler','Sko','Solhat']},
+    {cat:'Strand & vand', items:['Svømmeveste / armbind','Badelegetøj (spand & skovl)','Badesko']},
+    {cat:'Sundhed', items:['Solcreme SPF 50+ børn']},
+    {cat:'Underholdning', items:['Tablet + høretelefoner','Tegnegrejer / farver','Yndlingsdyr/bamse','Snacks til flyet']},
+  ],
+  noah: [
+    {cat:'Dokumenter', items:['Pas / ID-kort']},
+    {cat:'Tøj', items:['Tøj (×7 sæt)','Badetøj (×3)','Sneakers','Sandaler','Solbriller']},
+    {cat:'Sport', items:['Fodboldstøvler','Sportsstrømper']},
+    {cat:'Sundhed', items:['Solcreme SPF 30-50']},
+    {cat:'Elektronik', items:['Telefon + oplader','Gaming-enhed til flyet','Høretelefoner']},
+    {cat:'Andet', items:['Lommepenge (€)']},
+  ],
+  elias: [
+    {cat:'Dokumenter', items:['Pas / ID-kort']},
+    {cat:'Tøj', items:['Tøj (×7 sæt)','Badetøj (×3)','Sneakers','Sandaler','Solbriller']},
+    {cat:'Sundhed', items:['Solcreme SPF 30']},
+    {cat:'Elektronik', items:['Telefon + oplader','Høretelefoner (noise cancelling)','Powerbank']},
+    {cat:'Andet', items:['Lommepenge (€)','Bog / musik til rejsen']},
+  ],
 };
 
 const packKey = p => 'pack26_' + p;
 const packState = {};
+
+function flatItems(p) {
+  return packData[p].flatMap(g => g.items);
+}
+
 Object.keys(packData).forEach(p => {
   packState[p] = new Set(JSON.parse(localStorage.getItem(packKey(p)) || '[]'));
 });
@@ -542,20 +586,28 @@ function renderPanels(activeP) {
     const panel = document.createElement('div');
     panel.className = 'pack-panel' + (p === activeP ? ' on' : '');
     panel.id = 'panel_' + p;
-    packData[p].forEach((item, i) => {
-      const id = p + '_' + i;
-      const checked = packState[p].has(i);
-      const div = document.createElement('div');
-      div.className = 'pack-item' + (checked ? ' checked' : '');
-      div.innerHTML = `<input type="checkbox" id="${id}"${checked ? ' checked' : ''}><label for="${id}">${item}</label>`;
-      div.addEventListener('click', (e) => {
-        if (packState[p].has(i)) packState[p].delete(i); else packState[p].add(i);
-        localStorage.setItem(packKey(p), JSON.stringify([...packState[p]]));
-        div.classList.toggle('checked');
-        div.querySelector('input').checked = packState[p].has(i);
-        updateProgress(activeP);
+    let globalIdx = 0;
+    packData[p].forEach(group => {
+      const hdr = document.createElement('div');
+      hdr.className = 'pack-cat-header';
+      hdr.textContent = group.cat;
+      panel.appendChild(hdr);
+      group.items.forEach(item => {
+        const i = globalIdx++;
+        const id = p + '_' + i;
+        const checked = packState[p].has(i);
+        const div = document.createElement('div');
+        div.className = 'pack-item' + (checked ? ' checked' : '');
+        div.innerHTML = `<input type="checkbox" id="${id}"${checked ? ' checked' : ''}><label for="${id}">${item}</label>`;
+        div.addEventListener('click', () => {
+          if (packState[p].has(i)) packState[p].delete(i); else packState[p].add(i);
+          localStorage.setItem(packKey(p), JSON.stringify([...packState[p]]));
+          div.classList.toggle('checked');
+          div.querySelector('input').checked = packState[p].has(i);
+          updateProgress(p);
+        });
+        panel.appendChild(div);
       });
-      panel.appendChild(div);
     });
     container.appendChild(panel);
   });
@@ -563,7 +615,7 @@ function renderPanels(activeP) {
 }
 
 function updateProgress(p) {
-  const total = packData[p].length;
+  const total = flatItems(p).length;
   const done = packState[p].size;
   document.getElementById('packProg').textContent = done === total
     ? `✓ ${p.charAt(0).toUpperCase()+p.slice(1)} er pakket!`
