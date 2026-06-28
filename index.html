@@ -122,14 +122,24 @@
   }
 
   .section-label { font-size: 11px; font-weight: 500; color: var(--text3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 10px; }
-  .day-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; margin-bottom: 2.5rem; }
-  .dc { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 10px 14px; cursor: pointer; transition: all .15s; user-select: none; }
-  .dc:hover { border-color: var(--border2); background: var(--bg2); }
-  .dc.done { opacity: .42; }
-  .dc.done .dt { text-decoration: line-through; }
-  .dc-meta { display: flex; justify-content: space-between; margin-bottom: 3px; }
-  .dc-meta span { font-size: 11px; color: var(--text3); }
-  .dt { font-size: 12px; color: var(--text); }
+
+  /* Vertikal tidslinje */
+  .timeline { position: relative; padding-left: 36px; margin-bottom: 2.5rem; }
+  .timeline::before { content:''; position:absolute; left:10px; top:10px; bottom:10px; width:1.5px; background: var(--border2); border-radius: 2px; }
+  .tl-item { position: relative; padding: 0 0 28px 16px; cursor: pointer; user-select: none; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-dot { position:absolute; left:-22px; top:5px; width:14px; height:14px; border-radius:50%; background: var(--bg); border: 2px solid var(--border2); transition: border-color .2s, background .2s; flex-shrink:0; }
+  .tl-item:hover .tl-dot { border-color: var(--text2); }
+  .tl-item.done .tl-dot { background: var(--text3); border-color: var(--text3); }
+  .tl-item.special .tl-dot { border-color: #185FA5; background: #E6F1FB; }
+  .tl-item.done.special .tl-dot { background: var(--text3); border-color: var(--text3); }
+  .tl-meta { display:flex; align-items:center; gap:8px; margin-bottom:4px; }
+  .tl-date { font-size:12px; font-weight:600; color: var(--text); }
+  .tl-dayn { font-size:11px; color: var(--text3); }
+  .tl-text { font-size:14px; color: var(--text2); line-height:1.45; transition: color .2s; }
+  .tl-item:hover .tl-text { color: var(--text); }
+  .tl-item.done .tl-meta { opacity: .45; }
+  .tl-item.done .tl-text { text-decoration: line-through; color: var(--text3); opacity: .55; }
 
   .tips { background: var(--bg2); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.5rem; border: 0.5px solid var(--border); }
   .tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -271,7 +281,7 @@
   <div class="tab-section" id="tab-dagsplan">
 
     <p class="section-label">12-dages plan — klik for at markere som klaret</p>
-    <div class="day-grid" id="days"></div>
+    <div class="timeline" id="days"></div>
 
   </div>
 
@@ -417,16 +427,25 @@ acts.forEach(a => {
   grid.appendChild(card);
 });
 
-// Build day planner
+// Build day planner (vertical timeline)
 const daysEl = document.getElementById('days');
 const done = new Set(JSON.parse(localStorage.getItem('mal26') || '[]'));
 
+const specialDays = new Set([1, 12]); // ankomst & afrejse
 dayPlan.forEach(day => {
   const el = document.createElement('div');
-  el.className = 'dc' + (done.has(day.n) ? ' done' : '');
+  const isSpecial = specialDays.has(day.n);
+  el.className = 'tl-item' + (done.has(day.n) ? ' done' : '') + (isSpecial ? ' special' : '');
+  const icon = day.n === 1 ? ' <i class="ti ti-plane-arrival" style="font-size:11px;color:#185FA5"></i>'
+             : day.n === 12 ? ' <i class="ti ti-plane-departure" style="font-size:11px;color:#185FA5"></i>'
+             : '';
   el.innerHTML = `
-    <div class="dc-meta"><span>${day.d}</span><span>dag ${day.n}</span></div>
-    <p class="dt">${day.t}</p>`;
+    <div class="tl-dot"></div>
+    <div class="tl-meta">
+      <span class="tl-date">${day.d}${icon}</span>
+      <span class="tl-dayn">dag ${day.n}</span>
+    </div>
+    <p class="tl-text">${day.t}</p>`;
   el.addEventListener('click', () => {
     if (done.has(day.n)) done.delete(day.n); else done.add(day.n);
     localStorage.setItem('mal26', JSON.stringify([...done]));
